@@ -1,0 +1,50 @@
+<Widget>
+    <Kind>2</Kind>
+    <Name>DEBUG</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>a_debug</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>Infront Fadespeed</Name>
+    <Value>0.209205</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>Wave Dumping</Name>
+    <Value>0.9841</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>Maxwavespeed</Name>
+    <Value>73.6402</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>MaxSpeedScale</Name>
+    <Value>0.148536</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>Wavelerp</Name>
+    <Value>0.355649</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>jump</Name>
+    <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>General Fadespeed</Name>
+    <Value>0.292887</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>General Lerpspeed</Name>
+    <Value>0.0920502</Value>
+</Widget>

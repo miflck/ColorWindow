@@ -1,0 +1,35 @@
+<Widget>
+    <Kind>4</Kind>
+    <Name>Hue Range</Name>
+    <Value>23.6402</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>Saturation Range</Name>
+    <Value>120.502</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>Saturation Base</Name>
+    <Value>170.711</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>Brightness Range</Name>
+    <Value>123.013</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>Brightness Base</Name>
+    <Value>95.1883</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>Hue</Name>
+    <Value>158.975</Value>
+</Widget>
+<Widget>
+    <Kind>4</Kind>
+    <Name>Bright</Name>
+    <Value>50.1464</Value>
+</Widget>
