@@ -16,22 +16,22 @@
 <Widget>
     <Kind>4</Kind>
     <Name>Wave Dumping</Name>
-    <Value>0.9841</Value>
+    <Value>0.987448</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>Maxwavespeed</Name>
-    <Value>73.6402</Value>
+    <Value>72.8033</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>MaxSpeedScale</Name>
-    <Value>0.148536</Value>
+    <Value>0.169456</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>Wavelerp</Name>
-    <Value>0.355649</Value>
+    <Value>0.0669456</Value>
 </Widget>
 <Widget>
     <Kind>2</Kind>

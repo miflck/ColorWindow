@@ -10,7 +10,7 @@
 #define ColorWindows_TestClassController_h
 
 #define MAX_LINESIZE 100
-#define MATCH_SCORE  0.8
+#define MATCH_SCORE  0.7
 
 #pragma once
 #include "ofMain.h"

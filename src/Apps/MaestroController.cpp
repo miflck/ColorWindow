@@ -149,10 +149,12 @@ void MaestroController::update(){
                     // speed=ofToString(floor(ofClamp(ofMap(s, 5, 30, 60, 0),0,30)));
                     cout<<"wavespeed"<<vel<<endl;
                     ColorWave w=*new ColorWave();
-                    int win=ofMap(lines[i].myline.back().x,0,500,0,APPC->windowNum,true);
+                    int win=0;//ofMap(lines[i].myline.back().x,0,500,0,APPC->windowNum,true);
 
                     w.setSpeed(vel*10);
-                    w.setColor(ofColor(255,0,0));
+                    ofColor c;
+                    c.setHsb(ofRandom(0,255), ofRandom(200,255), ofRandom(240,255));
+                    w.setColor(c);
                     w.setWindowPosition(win);
                     wave.push_back(w);
                     
@@ -180,131 +182,119 @@ void MaestroController::update(){
     
     float hue=colorpos;//ofMap(colorpos, 0, ofGetWidth(), 0, 255);
     colorposColor.setHsb(hue, 255, 255);    
-  //  APPC->windows[0].setColor(colorposColor);
     
     
-   // for(int i=0;i<MAX_USERS;i++){
-        for(int i=0;i<2;i++){
-
-        // find the gesture which matches the current line.
+    for(int i=0;i<MAX_USERS;i++){
+      //  for(int i=0;i<2;i++){
         ofxUser  u=APPC->inter.users[i];
         if (u.bones) {
-
-                //for(int j=0;j<APPC->windowNum;j++){
-                int win=ofMap(u.bonesPoints.right_hand.x,u.bonesPoints.right_shoulder.x-150,u.bonesPoints.right_shoulder.x+150,0,APPC->windowNum,true);
+            
+            //Get window to manipulate
+            int win=ofMap(u.bonesPoints.right_hand.x,100,600,0,APPC->windowNum,true);
             int win2=ofMap(u.bonesPoints.left_hand.x,100,500,0,APPC->windowNum,true);
 
-                ofColor col= APPC->windows[win].getColor();
-                int h=col.getHue();
-                    
                 float vel=u.bonesVel.bone[11]->length();
-                float x=u.bonesVel.bone[11]->x;
-                float y=u.bonesVel.bone[11]->y;
-
-                    y=u.bonesPoints.bone[11]->y;
+              //float x=u.bonesVel.bone[11]->x;
+            //float y=u.bonesVel.bone[11]->y;
+               //float y=u.bonesPoints.bone[11]->y;
                     
-                    //float mY=ofMap(y,0,500,0,255,true);
-                    
-                    //h+=u.bonesVel.right_hand.y;
-                    
-                 //   h=ofMap(u.bonesPoints.right_hand.y,0,500,0,255,true);
+                //float mY=ofMap(y,0,500,0,255,true);
+                //h+=u.bonesVel.right_hand.y;
+                //h=ofMap(u.bonesPoints.right_hand.y,0,500,0,255,true);
+            
+           // float hue=ofMap(u.bonesPoints.left_hand.y,u.bonesPoints.left_shoulder.y-200,u.bonesPoints.left_shoulder.y+200,0,255,true);
             
             
-            
-           float b=ofMap(u.bonesPoints.left_hand.y,u.bonesPoints.left_shoulder.y-200,u.bonesPoints.left_shoulder.y+200,0,255,true);
-           
-
-            
-            
-            
+            //Set Brightness of all other Windows
+            ofColor col;
             float lH=ofMap(u.bonesPoints.left_hand.y,u.bonesPoints.left_shoulder.y-200,u.bonesPoints.left_shoulder.y+200,255,0,true);
-            
-            
-            
-            float handdist = u.bonesPoints.left_hand.distance(u.bonesPoints.right_hand);
-            float deviation=ofMap(handdist,50,800,0,150,true);
-            
-           // maestroFadeSpeed=ofMap(u.bonesPoints.left_hand.x,u.bonesPoints.left_shoulder.x-100,u.bonesPoints.left_shoulder.x,0,2,true);
-            maestroFadeSpeed=ofMap(u.bonesPoints.left_hand.y,u.bonesPoints.left_shoulder.y-200,u.bonesPoints.left_shoulder.y+200,0,1,true);
-            
-            //cout<<deviation<<" "<<handdist<<" "<<u.bonesPoints.left_hand.x<<" "<<maestroFadeSpeed<<endl;
-
-            
-            
-            h=ofMap(u.bonesPoints.right_hand.y,u.bonesPoints.right_shoulder.y-200,u.bonesPoints.right_shoulder.y+200,-deviation,255+deviation,true);
-            
-            h+=ofRandom(-vel,vel);
-            
-            if(h>255)h=h-255;
-            if(h<0)h=255-h;
-            
-            
-            
-
-            
-            
             for(int i=0;i<APPC->windowNum;i++){
                 col= APPC->windows[i].getColor();
                 float s=col.getSaturation();
-                col.setBrightness(lH);
+                if(!u.isIdle)col.setBrightness(lH); // Damits beim weglaufen nicht dunkel bleibt…
                 if(!APPC->windows[i].isFadeing())APPC->windows[i].setColor(col);
-
-               // if(!APPC->windows[i].isFadeing())APPC->windows[i].setFadeColor(col,globalIsInFrontFadeSpeed);
+                //if(!APPC->windows[i].isFadeing())APPC->windows[i].setFadeColor(col,globalIsInFrontFadeSpeed);
             }
             
-
             
             
+            
+            //hue deviation-> some sort of autogradient while hands increase distance
+            float handdist = u.bonesPoints.left_hand.distance(u.bonesPoints.right_hand);
+            float deviation=ofMap(handdist,50,800,0,150,true);
+            
+            //Get new Hue
+            float newHue =ofMap(u.bonesPoints.right_hand.y,u.bonesPoints.right_shoulder.y-200,u.bonesPoints.right_shoulder.y+200,-deviation,255+deviation,true);
+            
+            newHue+=ofRandom(-vel,vel);
+            if(newHue>255)newHue=newHue-255;
+            if(newHue<0)newHue=255-newHue;
             
         
             ofVec3f upperArm;
-            upperArm.set(u.bonesPoints.right_elbow);
-            upperArm-=u.bonesPoints.right_shoulder;
+            upperArm.set(u.bonesPoints.right_elbow-u.bonesPoints.right_shoulder);
+           
+            //upperArm-u.bonesPoints.right_shoulder.x;
             ofVec3f lowerArm;
             lowerArm.set(u.bonesPoints.right_hand);
             lowerArm-=u.bonesPoints.right_elbow;
 
             
-            float armlength=upperArm.length()+lowerArm.length();
+            float armlength=upperArm.length();//+lowerArm.length();
 
             float neckZ=u.bonesPoints.neck.z;
             float handYZ=u.bonesPoints.left_hand.z;
-            float deltaYZ =ofMap(handYZ,neckZ-500,neckZ-200,-100,+100,true);
+            float deltaYZ =ofMap(handYZ,neckZ-300,neckZ-100,100,-100,true);
             
             float handZ=u.bonesPoints.right_hand.z;
             float deltaZ =ofMap(handZ,neckZ-600,neckZ-300,0,180,true);
-            cout<<deltaZ<<endl;
+           // cout<<"armlength"<<armlength<<endl;
             
-            b=255;
+          //  b=255;
             
             //ofColor newCol=generateColorVariantFromColor(50,col);
             //col.setHue(h);
             
    
             
+            maestroFadeSpeed=ofMap(u.bonesPoints.left_hand.y,u.bonesPoints.left_shoulder.y-200,u.bonesPoints.left_shoulder.y+200,0,1,true);
             
-            col.setHsb(h+ofRandom(-vel,vel), b-deltaZ, 255);
+            
+            maestroFadeSpeed=0.1;
+            
+            float singleFadeSpeed=ofMap(vel,0,100,1,0,true);
+            maestroFadeSpeed=singleFadeSpeed;
+            //cout<<vel<<" "<<singleFadeSpeed<<endl;
 
-            if(!APPC->windows[win].isWave())APPC->windows[win].setColor(col);
-            if(!APPC->windows[win-1].isWave())APPC->windows[win-1].setFadeColor(col, maestroFadeSpeed,true);
+            col.setHsb(newHue+ofRandom(-vel,vel), 255-deltaZ, 255);
+
+           // if(!APPC->windows[win].isWave())APPC->windows[win].setColor(col);
+            APPC->windows[win].setColor(col);
+
+         APPC->windows[win].setFadeColor(col,singleFadeSpeed);
+
+            //if(!APPC->windows[win-1].isWave())APPC->windows[win-1].setFadeColor(col, maestroFadeSpeed,true);
 
           //  if(!APPC->windows[win].isWave())APPC->windows[win].setLerpColor(col);
 
             //Speedabhängig machen…
             
             
-            if(vel>20){
+          if(vel>20){
                 if(win-1){
                  //   col.setHsb(h-ofRandom(-deviation,deviation), b+ofRandom(-deviation,deviation), 255-ofRandom(deviation));
-                    col.setHsb(h-ofRandom(-2*vel,2*vel), b-ofRandom(-2*vel,2*vel), 255-ofRandom(-2*vel,2*vel));
-                    if(!APPC->windows[win-1].isWave())APPC->windows[win-1].setFadeColor(col, maestroFadeSpeed);
+                    col.setHsb(newHue-ofRandom(-2*vel,2*vel), 255-ofRandom(-2*vel,2*vel), 255-ofRandom(-2*vel,2*vel));
+                   // if(!APPC->windows[win-1].isWave())APPC->windows[win-1].setFadeColor(col, maestroFadeSpeed);
+                    APPC->windows[win-1].setFadeColor(col, maestroFadeSpeed);
 
                 }
                 if(win+1){
-                    col.setHsb(h-ofRandom(-2*vel,2*vel), b-ofRandom(-2*vel,2*vel), 255-ofRandom(-2*vel,2*vel));
+                    col.setHsb(newHue-ofRandom(-2*vel,2*vel),255-ofRandom(-2*vel,2*vel), 255-ofRandom(-2*vel,2*vel));
                    // col.setHsb(h-ofRandom(-deviation,deviation), b+ofRandom(-deviation,deviation), 255-ofRandom(deviation));
                     //if(!APPC->windows[win+1].isWave())APPC->windows[win+1].setColor(col);
                     if(!APPC->windows[win+1].isWave())APPC->windows[win+1].setFadeColor(col, maestroFadeSpeed);
+              APPC->windows[win+1].setFadeColor(col, maestroFadeSpeed);
+
                 }
                 
             }
@@ -312,16 +302,16 @@ void MaestroController::update(){
             if(vel>40){
                 
                 if(win-2){
-                    col.setHsb(h-ofRandom(-2*vel,2*vel), b-ofRandom(-3*vel,3*vel), 255);
+                    col.setHsb(newHue-ofRandom(-2*vel,2*vel), 255-ofRandom(-3*vel,3*vel), 255);
                     if(!APPC->windows[win-2].isWave())APPC->windows[win-2].setColor(col);
                 }
                 if(win+2){
-                    col.setHsb(h-ofRandom(-2*vel,2*vel), b-ofRandom(-2*vel,2*vel), 255);
+                    col.setHsb(newHue-ofRandom(-2*vel,2*vel), 255-ofRandom(-2*vel,2*vel), 255);
                     if(!APPC->windows[win+2].isWave())APPC->windows[win+2].setColor(col);
                 }
                 
             }
-            
+          
             
             
    
@@ -333,7 +323,7 @@ void MaestroController::update(){
     
     }
     
-    
+
 
 }
 //--------------------------------------------------------------------
@@ -370,7 +360,15 @@ void MaestroController::draw(){
         
 	}
  */
-        
+    for(int i=0;i<MAX_USERS;i++){
+        //  for(int i=0;i<2;i++){
+        ofxUser  u=APPC->inter.users[i];
+        if (u.bones) {
+    
+            ofCircle(u.bonesPoints.right_elbow,20);
+    
+        }
+    }
     //__windows___________________________
     if( APPC->showWindows){
         for(int i=0;i<APPC->windowNum;i++){

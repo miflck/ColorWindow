@@ -392,8 +392,15 @@ void ApplicationController::userMove(ofxUser & user){
 }
 
 void ApplicationController::userOut(ofxUser & user){
-	cout << "USEROUT" << endl; 
-}
+	cout << "USEROUT" << endl;
+    for(int i=0;i<NUM_WINDOWS;i++){
+        ofColor fadecol= windows[i].getColor();
+        fadecol.setBrightness(200);
+        fadecol.setSaturation(240);
+        windows[i].setFadeColor(fadecol,1);
+        
+        
+    }}
 
 
 void ApplicationController::completedMove(ofxUser & user){

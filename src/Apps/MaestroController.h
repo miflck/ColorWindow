@@ -11,7 +11,7 @@
 
 
 #define MAX_LINESIZE 100
-#define MATCH_SCORE  0.9
+#define MATCH_SCORE  0.80
 
 #pragma once
 #include "ofMain.h"
